@@ -33,35 +33,49 @@ export function Upload() {
         },
       )
 
-      console.log(response.data)
+      const blob = new Blob([response.data.image], {
+        type: response.data.image.mimetype,
+      })
+      const url = URL.createObjectURL(blob)
+      console.log(url)
 
       setFileName(response.data.nameFile)
 
       setLoading(false)
-
-      console.log(response.data.nameFile)
     } catch (error) {
       console.log(error)
     }
   }
 
   return (
-    <div className="flex flex-row items-center gap-4 rounded-lg p-2 bg-zinc-800">
-      <input
-        type="text"
-        value={fileName}
-        onChange={(e) => setFileName(e.target.value)}
-        className="h-full text-white rounded-lg px-4 bg-zinc-900"
-      />
+    <div className="h-auto flex flex-col items-center gap-5 rounded-lg p-4 bg-zinc-800">
+      <div className="w-full text-center">
+        <h1 className="text-xl font-bold text-white ">Converta sua imagem</h1>
+      </div>
 
-      <form className="text-white" encType="multipart/form-data">
-        <input type="file" onChange={handleFileChange} />
+      <div className="h-full w-full flex flex-col gap-4">
+        <span className="text-slate-300 text-xs">
+          Customize o nome do arquivo
+        </span>
+
+        <input
+          type="text"
+          value={fileName}
+          onChange={(e) => setFileName(e.target.value)}
+          className="h-11 w-full text-white rounded-lg px-4 bg-zinc-900"
+        />
+      </div>
+
+      <form className="w-full text-white" encType="multipart/form-data">
+        <input className="w-full" type="file" onChange={handleFileChange} />
       </form>
 
-      <progress max="100" value={loading ? 100 : 0} />
+      <div className="flex items-center">
+        <progress max="100" value={loading ? 100 : 0} />
+      </div>
 
       <button
-        className="w-full bg-purple-700 text-white px-4 py-2"
+        className="w-full bg-purple-700 text-white px-4 py-2 rounded-lg"
         onClick={handleUploadFile}
         type="button"
       >
